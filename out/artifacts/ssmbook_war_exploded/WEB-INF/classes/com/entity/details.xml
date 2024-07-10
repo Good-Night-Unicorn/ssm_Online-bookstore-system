@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 配置Mabatis映射文件 -->
+<mapper namespace="com.dao.DetailsDAO">
+	<resultMap type="details" id="detailsMap">
+		<id property="detailsid" column="detailsid" />
+		<result property="ordercode" column="ordercode" />
+		<result property="bookid" column="bookid" />
+		<result property="num" column="num" />
+		<result property="price" column="price" />
+		<result property="receivername" column="receivername" />
+		<result property="receiverphone" column="receiverphone" />
+		<result property="address" column="address" />
+		<result property="bookname" column="bookname" />
+
+	</resultMap>
+	<!-- 插入语句 DAO通过id调用此配置 -->
+	<insert id="insertDetails" parameterType="details">
+		insert into details(detailsid , ordercode , bookid , num , price ,receivername,
+		 receiverphone, address) values(#{detailsid} , #{ordercode} , #{bookid} ,
+		#{num} , #{price} , #{receivername} , #{receiverphone} , #{address} )
+	</insert>
+	<!-- 更新语句 DAO通过id调用此配置 -->
+	<update id="updateDetails" parameterType="details">
+		update details set ordercode=#{ordercode} , bookid=#{bookid} , num=#{num} ,
+		price=#{price} , receivername=#{receivername} , receiverphone=#{receiverphone} ,
+		address=#{address} where detailsid=#{detailsid}
+	</update>
+	<!-- 按主键删除 DAO通过id调用此配置 -->
+	<delete id="deleteDetails" parameterType="String">
+		delete from details where detailsid = #{detailsid}
+	</delete>
+	<!-- 查询全部信息 DAO通过id调用此配置 -->
+	<select id="getAllDetails" resultMap="detailsMap">
+		select a.* , b.bookname  from details a, book b
+		 where a.bookid = b.bookid order by detailsid desc
+	</select>
+	<!-- 按主键查询 DAO通过id调用此配置 -->
+	<select id="getDetailsById" parameterType="String" resultMap="detailsMap">
+		select a.* , b.bookname  from details a ,
+		book b  where a.bookid = b.bookid  and
+		detailsid=#{detailsid} order by detailsid desc
+	</select>
+	<!-- 按条件精确查询 DAO通过id调用此配置 -->
+	<select id="getDetailsByCond" parameterType="details" resultMap="detailsMap">
+		select a.* , b.bookname  from details a ,
+		book b  where  a.bookid = b.bookid
+		<if test="ordercode != null and '' != ordercode">
+			and a.ordercode = #{ordercode}
+		</if>
+		<if test="bookid != null and '' != bookid">
+			and a.bookid = #{bookid}
+		</if>
+		<if test="num != null and '' != num">
+			and a.num = #{num}
+		</if>
+		<if test="price != null and '' != price">
+			and a.price = #{price}
+		</if>
+		<if test="receivername != null and '' != receivername">
+			and a.receivername = #{receivername}
+		</if>
+		<if test="receiverphone != null and '' != receiverphone">
+			and a.receiverphone = #{receiverphone}
+		</if>
+		<if test="address != null and '' != address">
+			and a.address = #{address}
+		</if>
+	</select>
+	<!-- 按条件模糊查询 DAO通过id调用此配置 -->
+	<select id="getDetailsByLike" parameterType="details" resultMap="detailsMap">
+		select a.* , b.bookname  from details a ,
+		book b  where  a.bookid = b.bookid
+		<if test="ordercode != null and '' != ordercode">
+			and a.ordercode like CONCAT('%', CONCAT(#{ordercode}, '%'))
+		</if>
+		<if test="bookid != null and '' != bookid">
+			and a.bookid like CONCAT('%', CONCAT(#{bookid}, '%'))
+		</if>
+		<if test="num != null and '' != num">
+			and a.num like CONCAT('%', CONCAT(#{num}, '%'))
+		</if>
+		<if test="price != null and '' != price">
+			and a.price like CONCAT('%', CONCAT(#{price}, '%'))
+		</if>
+		<if test="receivername != null and '' != receivername">
+			and a.receivername = #{receivername}
+		</if>
+		<if test="receiverphone != null and '' != receiverphone">
+			and a.receiverphone = #{receiverphone}
+		</if>
+		<if test="address != null and '' != address">
+			and a.address = #{address}
+		</if>
+	</select>
+</mapper>
+
+

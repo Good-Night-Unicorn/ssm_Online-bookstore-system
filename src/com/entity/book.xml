@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 配置Mabatis映射文件 -->
+<mapper namespace="com.dao.BookDAO">
+	<resultMap type="book" id="bookMap">
+		<id property="bookid" column="bookid" />
+		<result property="bookname" column="bookname" />
+		<result property="image" column="image" />
+		<result property="cateid" column="cateid" />
+		<result property="price" column="price" />
+		<result property="recommend" column="recommend" />
+		<result property="hits" column="hits" />
+		<result property="sellnum" column="sellnum" />
+		<result property="contents" column="contents" />
+		<result property="catename" column="catename" />
+	</resultMap>
+	<!-- 插入语句 DAO通过id调用此配置 -->
+	<insert id="insertBook" parameterType="book">
+		insert into book(bookid ,
+		bookname , image , cateid , price , recommend ,
+	    hits , sellnum , contents ) values(#{bookid} ,
+		#{bookname} , #{image} ,
+		#{cateid} , #{price} , #{recommend} ,
+		 #{hits}, #{sellnum} , #{contents} )
+	</insert>
+	<!-- 更新语句 DAO通过id调用此配置 -->
+	<update id="updateBook" parameterType="book">
+		update book set
+		bookname=#{bookname} , image=#{image} , cateid=#{cateid} ,
+		price=#{price} , recommend=#{recommend} ,
+		hits=#{hits} , sellnum=#{sellnum} ,
+		contents=#{contents} where bookid=#{bookid}
+	</update>
+	<!-- 按主键删除 DAO通过id调用此配置 -->
+	<delete id="deleteBook" parameterType="String">
+		delete from book where
+		bookid = #{bookid}
+	</delete>
+	<!-- 查询全部信息 DAO通过id调用此配置 -->
+	<select id="getAllBook" resultMap="bookMap">
+		select a.* , b.catename from
+		book a , cate b where 1=1 and a.cateid =
+		b.cateid order by bookid desc
+	</select>
+
+	<select id="getBookByNews" resultMap="bookMap">
+		select a.* , b.catename
+		from book a , cate b where a.cateid = b.cateid
+		order by bookid desc
+		limit 5
+	</select>
+
+	<select id="getBookByHot" resultMap="bookMap">
+		select a.* , b.catename
+		from
+		book a , cate b where a.cateid = b.cateid
+		order
+		by hits desc
+		limit 5
+	</select>
+
+	<select id="getBookByCate" parameterType="String" resultMap="bookMap">
+		select a.* , b.catename from book a , cate b
+		where a.cateid = b.cateid
+		and a.cateid=#{cateid} order by
+		hits desc limit
+		5
+	</select>
+
+	<!-- 按主键查询 DAO通过id调用此配置 -->
+	<select id="getBookById" parameterType="String" resultMap="bookMap">
+		select a.* , b.catename from book a , cate b where 1=1 and a.cateid =
+		b.cateid and bookid=#{bookid} order by bookid desc
+	</select>
+	<!-- 按条件精确查询 DAO通过id调用此配置 -->
+	<select id="getBookByCond" parameterType="book" resultMap="bookMap">
+		select a.* , b.catename from book a , cate b where 1=1 and a.cateid =
+		b.cateid
+		<if test="bookname != null and '' != bookname">
+			and a.bookname = #{bookname}
+		</if>
+		<if test="image != null and '' != image">
+			and a.image = #{image}
+		</if>
+		<if test="cateid != null and '' != cateid">
+			and a.cateid = #{cateid}
+		</if>
+		<if test="price != null and '' != price">
+			and a.price = #{price}
+		</if>
+		<if test="recommend != null and '' != recommend">
+			and a.recommend = #{recommend}
+		</if>
+
+		<if test="hits != null and '' != hits">
+			and a.hits = #{hits}
+		</if>
+		<if test="sellnum != null and '' != sellnum">
+			and a.sellnum = #{sellnum}
+		</if>
+		<if test="contents != null and '' != contents">
+			and a.contents = #{contents}
+		</if>
+	</select>
+	<!-- 按条件模糊查询 DAO通过id调用此配置 -->
+	<select id="getBookByLike" parameterType="book" resultMap="bookMap">
+		select a.* , b.catename from book a , cate b where 1=1 and a.cateid =
+		b.cateid
+		<if test="bookname != null and '' != bookname">
+			and a.bookname like CONCAT('%', CONCAT(#{bookname}, '%'))
+		</if>
+		<if test="image != null and '' != image">
+			and a.image like CONCAT('%', CONCAT(#{image}, '%'))
+		</if>
+		<if test="cateid != null and '' != cateid">
+			and a.cateid like CONCAT('%', CONCAT(#{cateid}, '%'))
+		</if>
+		<if test="price != null and '' != price">
+			and a.price like CONCAT('%', CONCAT(#{price}, '%'))
+		</if>
+		<if test="recommend != null and '' != recommend">
+			and a.recommend like CONCAT('%', CONCAT(#{recommend},
+			'%'))
+		</if>
+
+		<if test="hits != null and '' != hits">
+			and a.hits like CONCAT('%', CONCAT(#{hits}, '%'))
+		</if>
+		<if test="sellnum != null and '' != sellnum">
+			and a.sellnum like CONCAT('%', CONCAT(#{sellnum}, '%'))
+		</if>
+		<if test="contents != null and '' != contents">
+			and a.contents like CONCAT('%', CONCAT(#{contents}, '%'))
+		</if>
+	</select>
+</mapper>
+
+
