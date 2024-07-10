@@ -1,4 +1,4 @@
-![8](https://github.com/Good-Night-Unicorn/ssm_Online-bookstore-system/assets/84435241/2142e2f9-813d-42a2-9e6f-f7eb6ec02f63)完整代码收费 可以加微信FY-yuanma 咨询 接毕业设计和论文
+完整代码收费 可以加微信FY-yuanma 咨询 接毕业设计和论文
 
 作者QQ：3042127848 微信：FY-yuanma (支持修改、 部署调试、 支持代做毕设)
 
